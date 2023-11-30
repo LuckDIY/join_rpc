@@ -1,11 +1,13 @@
-package com.example.reg_center.server.register.bean;
+package com.example.join_rpc.register.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * 节点服务对象，存储服务信息
  */
 @Data
+@AllArgsConstructor
 public class ServiceObject {
 
     /**

@@ -1,4 +1,4 @@
-package com.example.reg_center.config;
+package com.example.join_rpc.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,7 +19,7 @@ public class RpcConfig {
     private String registerAddress = "127.0.0.1:2128";
 
     /**
-     * 服务暴露端口
+     * rpc服务暴露端口
      */
     private Integer serverPort = 9999;
 

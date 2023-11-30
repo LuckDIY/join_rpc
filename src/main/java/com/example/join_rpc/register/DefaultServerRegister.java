@@ -1,6 +1,6 @@
-package com.example.reg_center.server.register;
+package com.example.join_rpc.register;
 
-import com.example.reg_center.server.register.bean.ServiceObject;
+import com.example.join_rpc.register.bean.ServiceObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,19 @@ import java.util.Map;
 /**
  * 服务注册抽象类，抽象公共部分,提供模版方法
  */
-public abstract class DefaultServerRegister implements ServerRegister{
+public abstract class DefaultServerRegister implements ServerRegister {
+
+    //服务端口
+    protected Integer serverPort;
+
+    //协议
+    protected String protocol;
+
+    //压缩算法
+    protected String compress;
+
+    //权重
+    protected Integer weight;
 
     /**
      * 节点提供的服务列表

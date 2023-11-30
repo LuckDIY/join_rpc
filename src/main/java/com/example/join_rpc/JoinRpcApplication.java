@@ -6,8 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JoinRpcApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JoinRpcApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(JoinRpcApplication.class, args);
+        while(true){}
+    }
 
 }

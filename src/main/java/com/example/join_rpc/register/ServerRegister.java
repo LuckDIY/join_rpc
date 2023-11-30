@@ -1,6 +1,7 @@
-package com.example.reg_center.server.register;
+package com.example.join_rpc.register;
 
-import com.example.reg_center.server.register.bean.ServiceObject;
+
+import com.example.join_rpc.register.bean.ServiceObject;
 
 /**
  * 节点 -> 服务注册接口，定义服务注册规范
