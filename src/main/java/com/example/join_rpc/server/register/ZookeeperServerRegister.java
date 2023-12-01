@@ -1,8 +1,8 @@
-package com.example.join_rpc.register;
+package com.example.join_rpc.server.register;
 
 import com.example.join_rpc.common.bean.Service;
 import com.example.join_rpc.common.constants.RpcConstant;
-import com.example.join_rpc.register.bean.ServiceObject;
+import com.example.join_rpc.server.register.bean.ServiceObject;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
@@ -13,9 +13,7 @@ import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 
 import java.net.InetAddress;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**

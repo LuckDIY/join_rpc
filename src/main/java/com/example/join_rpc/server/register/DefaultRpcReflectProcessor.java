@@ -1,38 +1,22 @@
-package com.example.join_rpc.register;
+package com.example.join_rpc.server.register;
 
+import com.example.join_rpc.annotation.RpcProcessorAno;
 import com.example.join_rpc.annotation.RpcService;
-import com.example.join_rpc.register.bean.ServiceObject;
+import com.example.join_rpc.server.register.bean.ServiceObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.common.StringUtils;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
-public class DefaultRpcBaseProcessor implements ApplicationListener<ContextRefreshedEvent> {
+@RpcProcessorAno("reflect")
+public class DefaultRpcReflectProcessor extends DefaultRpcBaseProcessor {
 
-    protected ServerRegister serverRegister;
-
-    public DefaultRpcBaseProcessor(ServerRegister serverRegister) {
-        this.serverRegister = serverRegister;
-    }
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        //Publish the final event.
-        //根上下文事件执行完成
-        if (Objects.isNull(contextRefreshedEvent.getApplicationContext().getParent())) {
-            ApplicationContext applicationContext = contextRefreshedEvent.getApplicationContext();
-            startBaseServer(applicationContext);
-        }
-    }
 
     //注册服务
-    private void startBaseServer(ApplicationContext applicationContext) {
-
+    @Override
+    protected void startBaseServer(ApplicationContext applicationContext) {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(RpcService.class);
 
         try {
@@ -51,7 +35,7 @@ public class DefaultRpcBaseProcessor implements ApplicationListener<ContextRefre
                     throw new UnsupportedOperationException("The exposed interface is not specific with '" + bean.getClass().getName() + "'");
                 }
 
-                if(beanInterfaces.length==1){
+                if (beanInterfaces.length == 1) {
                     value = beanInterfaces[0].getName();
                 }
 
@@ -60,12 +44,10 @@ public class DefaultRpcBaseProcessor implements ApplicationListener<ContextRefre
 
                 serverRegister.register(so);
 
-
             }
         } catch (Exception e) {
             log.error("rpc start exception :", e);
             throw new RuntimeException(e);
         }
-
     }
 }

@@ -11,4 +11,10 @@ public class RpcConstant {
      * zk路径分隔符
      */
     public static final String ZK_PATH_DELIMITER = "/";
+
+
+    /**
+     * MAX_FRAME_LENGTH
+     */
+    public static final int MAX_FRAME_LENGTH = 8 * 1024 * 1024;
 }

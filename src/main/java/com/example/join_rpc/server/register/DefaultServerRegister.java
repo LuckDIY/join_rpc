@@ -1,6 +1,6 @@
-package com.example.join_rpc.register;
+package com.example.join_rpc.server.register;
 
-import com.example.join_rpc.register.bean.ServiceObject;
+import com.example.join_rpc.server.register.bean.ServiceObject;
 
 import java.util.HashMap;
 import java.util.Map;

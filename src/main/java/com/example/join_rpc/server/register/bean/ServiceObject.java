@@ -1,4 +1,4 @@
-package com.example.join_rpc.register.bean;
+package com.example.join_rpc.server.register.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
