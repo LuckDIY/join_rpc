@@ -1,5 +1,6 @@
 package com.example.join_rpc.server;
 
+import com.example.join_rpc.server.handle.RequestBaseHandler;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +22,12 @@ public abstract class AbsRpcServer implements RpcServer {
      */
     protected String protocol;
 
+    protected RequestBaseHandler requestBaseHandler;
 
 
-
-
+    public AbsRpcServer(int port, String protocol, RequestBaseHandler requestBaseHandler) {
+        this.port = port;
+        this.protocol = protocol;
+        this.requestBaseHandler = requestBaseHandler;
+    }
 }

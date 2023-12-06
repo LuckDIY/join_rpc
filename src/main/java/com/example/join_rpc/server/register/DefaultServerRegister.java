@@ -34,12 +34,12 @@ public abstract class DefaultServerRegister implements ServerRegister {
             throw new IllegalArgumentException("so:ServiceObject cannot be empty");
         }
         //服务名字+服务分组+版本
-        serviceMap.put(so.getName() + so.getGroup() + so.getVersion(), so);
+        serviceMap.put(so.getName(), so);
     }
 
 
     @Override
-    public ServiceObject getServiceObject(String name) throws Exception {
+    public ServiceObject getServiceObject(String name) {
         return serviceMap.get(name);
     }
 }

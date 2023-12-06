@@ -29,10 +29,6 @@ public class ServiceObject {
      * 服务分组
      */
     private String group;
-
-    /**
-     * 服务版本
-     */
-    private String version;
+    
 
 }

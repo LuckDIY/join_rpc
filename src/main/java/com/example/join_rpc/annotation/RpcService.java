@@ -25,8 +25,4 @@ public @interface RpcService {
      */
     String group() default "";
 
-    /**
-     * 服务版本
-     */
-    String version() default "";
 }

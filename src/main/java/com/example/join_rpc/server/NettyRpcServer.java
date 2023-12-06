@@ -1,5 +1,8 @@
 package com.example.join_rpc.server;
 
+import com.example.join_rpc.common.codec.MessageDecoder;
+import com.example.join_rpc.common.codec.MessageEncoder;
+import com.example.join_rpc.server.handle.RequestBaseHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -15,7 +18,12 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyRpcServer extends AbsRpcServer {
 
+
     private Channel channel;
+
+    public NettyRpcServer(int port, String protocol, RequestBaseHandler requestBaseHandler) {
+        super(port, protocol,requestBaseHandler);
+    }
 
     @Override
     public void start() {
@@ -41,9 +49,9 @@ public class NettyRpcServer extends AbsRpcServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new IdleStateHandler(15, 0, 0, TimeUnit.SECONDS));
-                            //pipeline.addLast(new MessageDecoder());
-                            //pipeline.addLast(new MessageEncoder());
-                            //pipeline.addLast(new ChannelRequestHandler(requestHandler));
+                            pipeline.addLast(new MessageEncoder());
+                            pipeline.addLast(new MessageDecoder());
+                            pipeline.addLast(new ChannelRequestHandler(requestBaseHandler));
                         }
                     });
 
@@ -52,6 +60,7 @@ public class NettyRpcServer extends AbsRpcServer {
             channel = future.channel();
             //等待关闭
             future.channel().closeFuture().sync();
+            log.info("已关闭netty");
         } catch (InterruptedException e) {
             log.error("start netty server failed, message: {}", e.getMessage());
             throw new RuntimeException(e);

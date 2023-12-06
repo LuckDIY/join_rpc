@@ -1,5 +1,7 @@
 package com.example.join_rpc.server.register;
 
+import com.example.join_rpc.server.NettyRpcServer;
+import com.example.join_rpc.server.ShutdownHook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -15,14 +17,13 @@ public abstract class DefaultRpcBaseProcessor implements ApplicationListener<Con
 
     protected ServerRegister serverRegister;
 
-    public void initializeParameters(ServerRegister serverRegister) {
+    protected NettyRpcServer nettyRpcServer;
+
+    public void initializeParameters(ServerRegister serverRegister, NettyRpcServer nettyRpcServer) {
         //提供者服务注册
         this.serverRegister = serverRegister;
         //提供者服务启动
-
-
-        //todo 消费者依赖注入,注入代理对象
-
+        this.nettyRpcServer = nettyRpcServer;
     }
 
     @Override
@@ -32,12 +33,24 @@ public abstract class DefaultRpcBaseProcessor implements ApplicationListener<Con
         if (Objects.isNull(contextRefreshedEvent.getApplicationContext().getParent())) {
             ApplicationContext applicationContext = contextRefreshedEvent.getApplicationContext();
 
+            //服务端初始化
+            initServer(applicationContext);
 
-            //提供者服务初始化，注册，启动服务
-            startBaseServer(applicationContext);
+            //todo 消费者依赖注入,注入代理对象
+
         }
     }
 
-    protected abstract void startBaseServer(ApplicationContext applicationContext);
+    protected abstract void registerServer(ApplicationContext applicationContext);
+
+
+    private void initServer(ApplicationContext applicationContext){
+        //提供者服务初始化，注册，启动服务
+        registerServer(applicationContext);
+
+        ShutdownHook.registerShutdownHook(serverRegister,nettyRpcServer);
+        //提供者服务启动
+        nettyRpcServer.start();
+    }
 
 }

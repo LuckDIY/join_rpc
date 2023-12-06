@@ -1,6 +1,6 @@
 package com.example.join_rpc.server.register;
 
-import com.example.join_rpc.common.bean.Service;
+import com.example.join_rpc.common.model.Service;
 import com.example.join_rpc.common.constants.RpcConstant;
 import com.example.join_rpc.server.register.bean.ServiceObject;
 import com.google.gson.Gson;

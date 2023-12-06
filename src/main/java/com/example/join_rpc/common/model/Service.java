@@ -1,4 +1,4 @@
-package com.example.join_rpc.common.bean;
+package com.example.join_rpc.common.model;
 
 import lombok.Data;
 

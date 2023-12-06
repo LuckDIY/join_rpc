@@ -16,7 +16,7 @@ public class DefaultRpcReflectProcessor extends DefaultRpcBaseProcessor {
 
     //注册服务
     @Override
-    protected void startBaseServer(ApplicationContext applicationContext) {
+    protected void registerServer(ApplicationContext applicationContext) {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(RpcService.class);
 
         try {
@@ -38,9 +38,7 @@ public class DefaultRpcReflectProcessor extends DefaultRpcBaseProcessor {
                 if (beanInterfaces.length == 1) {
                     value = beanInterfaces[0].getName();
                 }
-
-
-                ServiceObject so = new ServiceObject(value, Class.forName(value), bean, annotation.group(), annotation.version());
+                ServiceObject so = new ServiceObject(value, Class.forName(value), bean, annotation.group());
 
                 serverRegister.register(so);
 

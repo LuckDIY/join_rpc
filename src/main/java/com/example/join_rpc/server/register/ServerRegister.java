@@ -30,5 +30,5 @@ public interface ServerRegister {
      * @return
      * @throws Exception
      */
-    ServiceObject getServiceObject(String name) throws Exception;
+    ServiceObject getServiceObject(String name);
 }

@@ -1,6 +1,10 @@
 package com.example.join_rpc.config;
 
+import com.example.join_rpc.annotation.RpcProxyHandleAno;
 import com.example.join_rpc.annotation.RpcProcessorAno;
+import com.example.join_rpc.exception.RpcException;
+import com.example.join_rpc.server.NettyRpcServer;
+import com.example.join_rpc.server.handle.RequestBaseHandler;
 import com.example.join_rpc.server.register.DefaultRpcBaseProcessor;
 import com.example.join_rpc.server.register.ServerRegister;
 import com.example.join_rpc.server.register.ZookeeperServerRegister;
@@ -37,6 +41,10 @@ public class RpcAutoConfiguration {
                 rpcConfig.getWeight());
     }
 
+    @Bean
+    public NettyRpcServer nettyRpcServer(RpcConfig rpcConfig, RequestBaseHandler requestBaseHandler) {
+        return new NettyRpcServer(rpcConfig.getServerPort(), rpcConfig.getProtocol(), requestBaseHandler);
+    }
 
     /**
      * rpc处理程序，负责注册服务，启动服务
@@ -45,9 +53,11 @@ public class RpcAutoConfiguration {
      * @return
      */
     @Bean
-    public DefaultRpcBaseProcessor rpcProcessor(RpcConfig rpcConfig, ServerRegister serverRegister) {
+    public DefaultRpcBaseProcessor rpcProcessor(RpcConfig rpcConfig,
+                                                ServerRegister serverRegister,
+                                                NettyRpcServer nettyRpcServer) {
         DefaultRpcBaseProcessor defaultRpcBaseProcessor = getDefaultRpcBaseProcessor(rpcConfig.getServerProxyType());
-        defaultRpcBaseProcessor.initializeParameters(serverRegister);
+        defaultRpcBaseProcessor.initializeParameters(serverRegister, nettyRpcServer);
         return defaultRpcBaseProcessor;
     }
 
@@ -69,5 +79,24 @@ public class RpcAutoConfiguration {
             }
         }
         throw new RuntimeException("无匹配的rpc代理处理器");
+    }
+
+    @Bean
+    public RequestBaseHandler requestBaseHandler(@Autowired ServerRegister serverRegister, @Autowired RpcConfig rpcConfig) {
+        RequestBaseHandler requestHandler = getRequestHandler(rpcConfig.getServerProxyType());
+        requestHandler.setServerRegister(serverRegister);
+        return requestHandler;
+    }
+
+    private RequestBaseHandler getRequestHandler(String name) {
+        ServiceLoader<RequestBaseHandler> handlers = ServiceLoader.load(RequestBaseHandler.class);
+        for (RequestBaseHandler handler : handlers) {
+            RpcProxyHandleAno rh = handler.getClass().getAnnotation(RpcProxyHandleAno.class);
+            Assert.notNull(rh, "load server proxy type can not be empty!");
+            if (name.equals(rh.value())) {
+                return handler;
+            }
+        }
+        throw new RpcException("invalid server proxy config");
     }
 }
