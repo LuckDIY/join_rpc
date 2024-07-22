@@ -31,7 +31,7 @@ public class RpcConstant {
     public static final byte RESPONSE_TYPE = 2;
 
     /**
-     * HEARTBEAT_REQUEST_TYPE
+     * HEARTBEAT_REQUEST_TYPE 心跳
      */
     public static final byte HEARTBEAT_REQUEST_TYPE = 3;
 

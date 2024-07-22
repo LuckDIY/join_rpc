@@ -20,9 +20,4 @@ public @interface RpcService {
      */
     String value() default "";
 
-    /**
-     * 服务分组 服务接口有多个实现类时按注解设置的值分组
-     */
-    String group() default "";
-
 }

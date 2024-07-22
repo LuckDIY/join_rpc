@@ -9,5 +9,5 @@ public @interface RpcProcessorAno {
 
 
     //代理类型
-    public String value() default "";
+    String value() default "";
 }

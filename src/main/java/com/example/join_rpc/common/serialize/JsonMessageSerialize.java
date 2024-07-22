@@ -1,19 +1,26 @@
 package com.example.join_rpc.common.serialize;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.join_rpc.common.model.RpcRequest;
 import com.example.join_rpc.common.model.RpcResponse;
 import com.google.common.base.Charsets;
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class JsonMessageSerialize implements MessageSerialize {
 
-    private Gson gson = new GsonBuilder()
+    private static Gson gson = new GsonBuilder()
             .registerTypeAdapter(Class.class, new ClassTypeAdapter())
             .registerTypeAdapter(Exception.class, new ExceptionTypeAdapter())
+            .registerTypeAdapter(Integer.class, new IntegerTypeAdapter())
             .create();
 
     public JsonMessageSerialize() {
@@ -29,6 +36,7 @@ public class JsonMessageSerialize implements MessageSerialize {
     public RpcRequest unmarshallingRequest(byte[] data) throws Exception {
         return gson.fromJson(new String(data, Charsets.UTF_8), RpcRequest.class);
     }
+
 
     @Override
     public byte[] marshallingResponse(RpcResponse response) throws Exception {
@@ -93,5 +101,23 @@ public class JsonMessageSerialize implements MessageSerialize {
             return jsonObject;
         }
     }
+
+    static class IntegerTypeAdapter implements JsonSerializer<Integer>, JsonDeserializer<Integer> {
+
+        @Override
+        public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.getAsString().contains(".")) {
+                return (int) json.getAsDouble();
+            }
+            return json.getAsInt();
+        }
+
+        @Override
+        public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src);
+        }
+    }
+
+
 
 }

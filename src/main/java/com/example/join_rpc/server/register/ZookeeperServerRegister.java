@@ -27,7 +27,7 @@ public class ZookeeperServerRegister extends DefaultServerRegister {
     private static final int DEFAULT_SESSION_TIMEOUT_MS = Integer.getInteger("curator-default-session-timeout", 60 * 1000);
     private static final int DEFAULT_CONNECTION_TIMEOUT_MS = Integer.getInteger("curator-default-connection-timeout", 15 * 1000);
 
-    private static ArrayList<String> ExportedServiceURI = new ArrayList<>();
+    private static final ArrayList<String> ExportedServiceURI = new ArrayList<>();
 
 
     // 创建连接实例

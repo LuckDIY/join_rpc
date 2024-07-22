@@ -5,8 +5,10 @@ import com.example.join_rpc.common.constants.RpcConstant;
 import com.example.join_rpc.common.model.RpcMessage;
 import com.example.join_rpc.common.model.RpcRequest;
 import com.example.join_rpc.common.model.RpcResponse;
+import com.example.join_rpc.common.serialize.FastJsonMessageSerialize;
 import com.example.join_rpc.common.serialize.JsonMessageSerialize;
 import com.example.join_rpc.common.serialize.MessageSerialize;
+import com.example.join_rpc.common.serialize.ProtoBufSerializeMessageProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -93,7 +95,7 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
             in.readBytes(bs);
 
             // deserialize the object
-            MessageSerialize messageSerialize = new JsonMessageSerialize();
+            MessageSerialize messageSerialize = new ProtoBufSerializeMessageProtocol();
             if (messageType == RpcConstant.REQUEST_TYPE) {
                 RpcRequest tmpValue = messageSerialize.unmarshallingRequest(bs);
                 rpcMessage.setData(tmpValue);

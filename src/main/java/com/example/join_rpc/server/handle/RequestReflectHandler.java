@@ -9,6 +9,9 @@ import com.example.join_rpc.server.register.bean.ServiceObject;
 
 import java.lang.reflect.Method;
 
+/**
+ * 调用处理器 反射 实现类
+ */
 @RpcProxyHandleAno(RpcConstant.SERVER_PROXY_TYPE_REFLECT)
 public class RequestReflectHandler extends RequestBaseHandler {
 

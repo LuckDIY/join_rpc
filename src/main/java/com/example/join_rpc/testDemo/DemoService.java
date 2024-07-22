@@ -1,6 +1,6 @@
 package com.example.join_rpc.testDemo;
 
-import java.util.List;
+import com.example.join_rpc.annotation.RpcService;
 
 public interface DemoService {
     String hello(String var1, Integer var2);

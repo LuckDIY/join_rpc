@@ -26,4 +26,6 @@ public class RpcRequest {
 
     private Object[] parameters;
 
+    private Integer a;
+
 }

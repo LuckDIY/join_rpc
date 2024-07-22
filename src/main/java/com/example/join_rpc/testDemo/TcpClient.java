@@ -58,10 +58,10 @@ public class TcpClient {
         rpcMessage.setType(RpcConstant.REQUEST_TYPE);
         RpcRequest rpcRequest = new RpcRequest();
         rpcRequest.setRequestId("123423");
-        rpcRequest.setServiceName("服务名");
-        rpcRequest.setServiceMethod("方法名");
-        rpcRequest.setParametersTypes(new Class[]{String.class});
-        rpcRequest.setParameters(new Object[]{"哈哈哈"});
+        rpcRequest.setServiceName("com.example.join_rpc.testDemo.DemoService");
+        rpcRequest.setServiceMethod("hello");
+        rpcRequest.setParametersTypes(new Class[]{String.class,Integer.class});
+        rpcRequest.setParameters(new Object[]{"哈哈哈",123});
         rpcMessage.setData(rpcRequest);
         channel.writeAndFlush(rpcMessage);
         channel.closeFuture().sync();

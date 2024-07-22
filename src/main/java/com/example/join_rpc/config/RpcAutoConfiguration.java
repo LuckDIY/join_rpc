@@ -1,13 +1,13 @@
 package com.example.join_rpc.config;
 
-import com.example.join_rpc.annotation.RpcProxyHandleAno;
 import com.example.join_rpc.annotation.RpcProcessorAno;
+import com.example.join_rpc.annotation.RpcProxyHandleAno;
 import com.example.join_rpc.exception.RpcException;
 import com.example.join_rpc.server.NettyRpcServer;
 import com.example.join_rpc.server.handle.RequestBaseHandler;
-import com.example.join_rpc.server.register.DefaultRpcBaseProcessor;
+import com.example.join_rpc.server.register.LocalMapServerRegister;
 import com.example.join_rpc.server.register.ServerRegister;
-import com.example.join_rpc.server.register.ZookeeperServerRegister;
+import com.example.join_rpc.server.register.processor.DefaultRpcBaseProcessor;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -35,11 +35,27 @@ public class RpcAutoConfiguration {
     @Bean
     public ServerRegister serverRegister(@Autowired RpcConfig rpcConfig) {
 
+        /*//默认zk实现注册中心
         return new ZookeeperServerRegister(rpcConfig.getRegisterAddress(),
                 rpcConfig.getServerPort(), rpcConfig.getProtocol(),
                 rpcConfig.isEnableCompress() ? rpcConfig.getCompress() : "UNZIP",
-                rpcConfig.getWeight());
+                rpcConfig.getWeight());*/
+        return new LocalMapServerRegister();
     }
+
+    /**
+     * 请求调用处理器
+     * @param serverRegister 服务注册和获取接口
+     * @param rpcConfig rpc 配置
+     * @return 请求调用处理器
+     */
+    @Bean
+    public RequestBaseHandler requestBaseHandler(@Autowired ServerRegister serverRegister, @Autowired RpcConfig rpcConfig) {
+        RequestBaseHandler requestHandler = getRequestHandler(rpcConfig.getServerProxyType());
+        requestHandler.setServerRegister(serverRegister);
+        return requestHandler;
+    }
+
 
     @Bean
     public NettyRpcServer nettyRpcServer(RpcConfig rpcConfig, RequestBaseHandler requestBaseHandler) {
@@ -81,12 +97,7 @@ public class RpcAutoConfiguration {
         throw new RuntimeException("无匹配的rpc代理处理器");
     }
 
-    @Bean
-    public RequestBaseHandler requestBaseHandler(@Autowired ServerRegister serverRegister, @Autowired RpcConfig rpcConfig) {
-        RequestBaseHandler requestHandler = getRequestHandler(rpcConfig.getServerProxyType());
-        requestHandler.setServerRegister(serverRegister);
-        return requestHandler;
-    }
+
 
     private RequestBaseHandler getRequestHandler(String name) {
         ServiceLoader<RequestBaseHandler> handlers = ServiceLoader.load(RequestBaseHandler.class);

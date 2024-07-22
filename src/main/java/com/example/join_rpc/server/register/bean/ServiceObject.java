@@ -25,10 +25,6 @@ public class ServiceObject {
      */
     private Object obj;
 
-    /**
-     * 服务分组
-     */
-    private String group;
     
 
 }

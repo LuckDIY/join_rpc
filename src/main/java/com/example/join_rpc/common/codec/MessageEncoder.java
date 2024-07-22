@@ -6,8 +6,10 @@ import com.example.join_rpc.common.constants.RpcConstant;
 import com.example.join_rpc.common.model.RpcMessage;
 import com.example.join_rpc.common.model.RpcRequest;
 import com.example.join_rpc.common.model.RpcResponse;
+import com.example.join_rpc.common.serialize.FastJsonMessageSerialize;
 import com.example.join_rpc.common.serialize.JsonMessageSerialize;
 import com.example.join_rpc.common.serialize.MessageSerialize;
+import com.example.join_rpc.common.serialize.ProtoBufSerializeMessageProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -55,7 +57,7 @@ public class MessageEncoder extends MessageToByteEncoder<RpcMessage> {
             // if messageType is not heartbeat message,fullLength = head length + body length
             if (messageType != RpcConstant.HEARTBEAT_REQUEST_TYPE && messageType != RpcConstant.HEARTBEAT_RESPONSE_TYPE) {
                 // serialize the object
-                MessageSerialize messageSerialize = new JsonMessageSerialize();
+                MessageSerialize messageSerialize = new ProtoBufSerializeMessageProtocol();
                 if (messageType == RpcConstant.REQUEST_TYPE) {
                     bodyBytes = messageSerialize.marshallingRequest((RpcRequest) rpcMessage.getData());
                 } else {

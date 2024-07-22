@@ -1,7 +1,8 @@
-package com.example.join_rpc.server.register;
+package com.example.join_rpc.server.register.processor;
 
 import com.example.join_rpc.server.NettyRpcServer;
 import com.example.join_rpc.server.ShutdownHook;
+import com.example.join_rpc.server.register.ServerRegister;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -10,7 +11,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import java.util.Objects;
 
 /**
- * 注册服务处理器
+ * 注册服务 处理器
+ *
+ * 监听 ContextRefreshedEvent 上下文刷新完成事件
  */
 @Slf4j
 public abstract class DefaultRpcBaseProcessor implements ApplicationListener<ContextRefreshedEvent> {

@@ -33,7 +33,7 @@ public abstract class DefaultServerRegister implements ServerRegister {
         if (so == null) {
             throw new IllegalArgumentException("so:ServiceObject cannot be empty");
         }
-        //服务名字+服务分组+版本
+        //key class路径
         serviceMap.put(so.getName(), so);
     }
 
