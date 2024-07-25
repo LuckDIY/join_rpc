@@ -4,8 +4,9 @@ package com.example.join_rpc.testDemo;
 import com.example.join_rpc.annotation.RpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-@RpcService
+@Service
 public class DemoServiceImpl implements DemoService {
 
     private static final Logger log = LoggerFactory.getLogger(DemoServiceImpl.class);

@@ -9,8 +9,6 @@ import java.lang.annotation.*;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-//注册bean
-@Component
 @Documented
 public @interface RpcService {
 

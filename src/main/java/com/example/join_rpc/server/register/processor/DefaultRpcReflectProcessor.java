@@ -2,11 +2,13 @@ package com.example.join_rpc.server.register.processor;
 
 import com.example.join_rpc.annotation.RpcProcessorAno;
 import com.example.join_rpc.annotation.RpcService;
+import com.example.join_rpc.client.RpcServiceProxy;
 import com.example.join_rpc.server.register.bean.ServiceObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.common.StringUtils;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -20,9 +22,14 @@ public class DefaultRpcReflectProcessor extends DefaultRpcBaseProcessor {
 
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(RpcService.class);
 
+
         try {
             for (Map.Entry<String, Object> entry : beans.entrySet()) {
                 Object bean = entry.getValue();
+                if(bean.hashCode()==0){
+                    log.info("消费者接口代理对象，生产者注册不注册:{}",bean);
+                    continue;
+                }
                 String value = getClassPath(bean);
                 ServiceObject so = new ServiceObject(value, Class.forName(value), bean);
 
@@ -42,17 +49,13 @@ public class DefaultRpcReflectProcessor extends DefaultRpcBaseProcessor {
         //bean实现的接口
         Class<?>[] beanInterfaces = beanClass.getInterfaces();
 
-        RpcService annotation = beanClass.getAnnotation(RpcService.class);
+        //实现RpcService的第一个接口
+        Class<?> beanInterface = Arrays.stream(beanInterfaces)
+                .filter(x -> null != x.getAnnotation(RpcService.class))
+                .findFirst().orElse(null);
 
-        //不是只实现一个接口，则使用注解中的value
-        String value = annotation.value();
-        if (beanInterfaces.length != 1 && StringUtils.isBlank(annotation.value())) {
-            throw new UnsupportedOperationException("The exposed interface is not specific with '" + bean.getClass().getName() + "'");
-        }
+        assert beanInterface != null;
 
-        if (beanInterfaces.length == 1) {
-            value = beanInterfaces[0].getName();
-        }
-        return value;
+        return beanInterface.getName();
     }
 }
