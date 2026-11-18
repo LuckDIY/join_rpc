@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: example-consumer
+
+join-rpc:
+  client:
+    timeout: 3s
+
+---
+# 默认：不用注册中心，直连本机的 provider
+spring:
+  config:
+    activate:
+      on-profile: "!nacos"
+join-rpc:
+  client:
+    direct:
+      example-provider: 127.0.0.1:9999
+
+---
+spring:
+  config:
+    activate:
+      on-profile: nacos
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}

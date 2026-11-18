@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: example-provider
+
+join-rpc:
+  server:
+    port: 9999
+
+---
+spring:
+  config:
+    activate:
+      on-profile: nacos
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}

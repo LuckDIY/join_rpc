@@ -1,2 +1,0 @@
-# factories
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.example.reg_center.config.RpcAutoConfiguration
