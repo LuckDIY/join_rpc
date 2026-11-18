@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.github.chaoleiwang</groupId>
+        <artifactId>join-rpc</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>join-rpc-example</artifactId>
+    <name>join-rpc-example</name>
+    <description>join-rpc 示例:api(共享接口) + provider(服务提供方) + consumer(服务消费方),默认直连模式,可用 nacos profile 切换为注册中心模式</description>
+
+    <properties>
+        <!-- spring-boot:run 默认启动 provider,加 -Pconsumer 切换到 consumer -->
+        <example.mainClass>io.github.chaoleiwang.example.provider.ExampleProviderApplication</example.mainClass>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.chaoleiwang</groupId>
+            <artifactId>join-rpc-spring-boot-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Nacos 注册中心(仅示例使用,核心库不依赖)。
+             默认通过 spring.cloud.nacos.discovery.enabled=false 关闭,使用 nacos profile 时启用 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>consumer</id>
+            <properties>
+                <example.mainClass>io.github.chaoleiwang.example.consumer.ExampleConsumerApplication</example.mainClass>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${example.mainClass}</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
