@@ -1,0 +1,12 @@
+# Nacos 注册中心模式(与 provider/consumer profile 叠加使用,例如 -Dspring-boot.run.profiles=nacos,provider)
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848
+
+rpc:
+  client:
+    # 注册中心模式下不直连
+    direct-address: ""

@@ -1,0 +1,7 @@
+# consumer:纯服务消费方,关闭 RPC 服务端,启动 web 服务
+server:
+  port: 8080
+
+rpc:
+  server:
+    enabled: false

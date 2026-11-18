@@ -1,0 +1,19 @@
+# 默认配置:直连模式(不需要注册中心),Nacos 默认关闭
+spring:
+  application:
+    name: join-rpc-example
+  cloud:
+    nacos:
+      discovery:
+        enabled: false
+
+rpc:
+  server:
+    port: 9999
+  client:
+    # 直连模式:消费方直接连 provider 的 RPC 端口
+    direct-address: 127.0.0.1:9999
+
+logging:
+  level:
+    io.github.chaoleiwang: info
